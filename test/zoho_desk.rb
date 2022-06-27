@@ -27,7 +27,6 @@ describe Connectors::ZohoDesk do
     end
   end
 
-
   describe '#load_tickets' do
     it 'returns paginated list of tickets' do
       access_token = ENV.fetch('ACCESS_TOKEN', nil)
@@ -40,9 +39,24 @@ describe Connectors::ZohoDesk do
       tickets = zoho_desk.load_tickets
 
       assert_equal 1, tickets.length
-      assert_equal "113670000000158077", tickets[0]["id"]
-      assert_equal "101", tickets[0]["ticketNumber"]
-      assert_equal "Here's your first ticket.", tickets[0]["subject"]
+      assert_equal '113670000000158077', tickets[0]['id']
+      assert_equal '101', tickets[0]['ticketNumber']
+      assert_equal "Here's your first ticket.", tickets[0]['subject']
     end
+
+    
+    it 'handles the pagination parameters' do
+      access_token = ENV.fetch('ACCESS_TOKEN', nil)
+      refresh_token = ENV.fetch('REFRESH_TOKEN', nil)
+      zoho_desk = Connectors::ZohoDesk.new(
+        access_token,
+        refresh_token
+      )
+
+      tickets = zoho_desk.load_tickets(1, 12)
+
+      # TODO: assert the length after seeding
+    end
+  end
   end
 end

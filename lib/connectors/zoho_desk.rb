@@ -50,11 +50,13 @@ module Connectors
       # TODO: > load ticket
     end
 
-    def load_tickets(batch_offset: 0, batch_size: 100)
-      # FIXME: default 0 and 100?
-      response = read_connection.get('tickets')
+    def load_tickets(batch_offset = 0, batch_size = 100)
+      response = read_connection.get('tickets') do |req|
+        req.params['from'] = batch_offset
+        req.params['limit'] = batch_size
+      end
 
-      response.body["data"]
+      response.body['data']
     end
 
     def generate_item_url(object_name, source_item)
