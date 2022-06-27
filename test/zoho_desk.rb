@@ -58,5 +58,21 @@ describe Connectors::ZohoDesk do
       # TODO: assert the length after seeding
     end
   end
+
+  describe '#load_ticket' do
+    it 'returns ticket data' do
+      access_token = ENV.fetch('ACCESS_TOKEN', nil)
+      refresh_token = ENV.fetch('REFRESH_TOKEN', nil)
+      zoho_desk = Connectors::ZohoDesk.new(
+        access_token,
+        refresh_token
+      )
+
+      ticket = zoho_desk.load_ticket('113670000000158077')
+
+      assert_equal '113670000000158077', ticket['id']
+      assert_equal '101', ticket['ticketNumber']
+      assert_equal "Here's your first ticket.", ticket['subject']
+    end
   end
 end

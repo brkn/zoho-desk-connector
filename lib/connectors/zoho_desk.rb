@@ -47,7 +47,9 @@ module Connectors
     end
 
     def load_ticket(id)
-      # TODO: > load ticket
+      response = read_connection.get("tickets/#{id}")
+
+      response.body
     end
 
     def load_tickets(batch_offset = 0, batch_size = 100)
