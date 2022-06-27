@@ -64,28 +64,28 @@ module Connectors
     def generate_item_url(object_name, source_item)
       raise NotImplementedError unless object_name == :tickets
 
-      dig_path = {
+      dig_paths = {
         tickets: ['webUrl']
       }
 
       if source_item.is_a?(Array)
-        source_item.map { |item| item.dig(*dig_path[object_name]) }
+        source_item.map { |item| item.dig(*dig_paths[object_name]) }
       else
-        source_item.dig(*dig_path[object_name])
+        source_item.dig(*dig_paths[object_name])
       end
     end
 
     def parse_core_item_id(object_name, source_item)
       raise NotImplementedError unless object_name == :tickets
 
-      dig_path = {
+      dig_paths = {
         tickets: ['id']
       }
 
       if source_item.is_a?(Array)
-        source_item.map { |item| item.dig(*dig_path[object_name]) }
+        source_item.map { |item| item.dig(*dig_paths[object_name]) }
       else
-        source_item.dig(*dig_path[object_name])
+        source_item.dig(*dig_paths[object_name])
       end
     end
 
