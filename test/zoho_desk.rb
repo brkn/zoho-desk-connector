@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'test_helper'
-require './lib/connectors/zoho_desk'
+require 'connectors'
 
 describe Connectors::ZohoDesk do
   let(:zoho_desk) do

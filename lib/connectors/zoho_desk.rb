@@ -5,10 +5,6 @@ require 'faraday_middleware'
 require 'dotenv/load'
 
 module Connectors
-  class ZohoDeskError < StandardError; end
-  class NotImplementedError < ZohoDeskError; end
-  class AuthenticationError < ZohoDeskError; end
-
   class ZohoDesk
     BASE_URL = 'https://desk.zoho.eu/api/v1/'
     AUTH_URL = 'https://accounts.zoho.eu/oauth/v2/token'
