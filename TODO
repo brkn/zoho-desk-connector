@@ -1,1 +1,37 @@
 ☐ downgrade ruby version to 2.4.9 @created(21-06-22 13:15)
+  problem with m1?
+  ```error output
+  > asdf install ruby 2.4.9
+    Downloading openssl-1.1.1l.tar.gz...
+    -> https://dqw8nmjcqpjn7.cloudfront.net/0b7a3e5e59c34827fe0c3a74b7ec8baef302b98fa80088d7f9153aa16fa76bd1
+    Installing openssl-1.1.1l...
+    Installed openssl-1.1.1l to /Users/berkanunal/.asdf/installs/ruby/2.4.9
+
+    Downloading ruby-2.4.9.tar.bz2...
+    -> https://cache.ruby-lang.org/pub/ruby/2.4/ruby-2.4.9.tar.bz2
+    Installing ruby-2.4.9...
+
+    WARNING: ruby-2.4.9 is past its end of life and is now unsupported.
+    It no longer receives bug fixes or critical security updates.
+
+    ruby-build: using readline from homebrew
+
+    BUILD FAILED (macOS 11.6.2 using ruby-build 20211227)
+
+    Inspect or clean up the working tree at /var/folders/_2/rtgh90fn1kggm5rt1fh9hkr80000gn/T/ruby-build.20220627041658.32349.EojSiW
+    Results logged to /var/folders/_2/rtgh90fn1kggm5rt1fh9hkr80000gn/T/ruby-build.20220627041658.32349.log
+
+    Last 10 log lines:
+    readline.c:79:42: note: expanded from macro 'rl_username_completion_function'
+    # define rl_username_completion_function username_completion_function
+                                            ^
+    /opt/homebrew/opt/readline/include/readline/readline.h:485:14: note: 'rl_username_completion_function' declared here
+    extern char *rl_username_completion_function PARAMS((const char *, int));
+                ^
+    1 error generated.
+    make[2]: *** [readline.o] Error 1
+    make[1]: *** [ext/readline/all] Error 2
+    make: *** [build-ext] Error 2
+  ```
+☐ downgrade faraday gem version to needed @created(27-06-22 04:17)
+☐ Add mocks for the external requests @created(27-06-22 04:19)

@@ -6,6 +6,7 @@ AllCops:
 
 Style/Documentation:
   Enabled: false
-
 Metrics/MethodLength:
+  Enabled: false
+Metrics/BlockLength:
   Enabled: false

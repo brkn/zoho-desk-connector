@@ -6,17 +6,13 @@ require './lib/connectors/zoho_desk'
 describe Connectors::ZohoDesk do
   let(:zoho_desk) do
     access_token = ENV.fetch('ACCESS_TOKEN', nil)
-    refresh_token = ENV.fetch('REFRESH_TOKEN', nil)
 
-    Connectors::ZohoDesk.new(
-      access_token,
-      refresh_token
-    )
+    Connectors::ZohoDesk.new(access_token)
   end
 
   describe '#validate_access' do
     it 'raises AuthenticationError if credentials are invalid' do
-      zoho_desk = Connectors::ZohoDesk.new('invalid-username', 'invalid-api-key')
+      zoho_desk = Connectors::ZohoDesk.new('invalid access_token')
 
       assert_raises(Connectors::AuthenticationError) do
         zoho_desk.validate_access
@@ -41,13 +37,6 @@ describe Connectors::ZohoDesk do
     end
 
     it 'handles the pagination parameters' do
-      access_token = ENV.fetch('ACCESS_TOKEN', nil)
-      refresh_token = ENV.fetch('REFRESH_TOKEN', nil)
-      zoho_desk = Connectors::ZohoDesk.new(
-        access_token,
-        refresh_token
-      )
-
       _tickets = zoho_desk.load_tickets(1, 12)
 
       # TODO: assert the length after seeding

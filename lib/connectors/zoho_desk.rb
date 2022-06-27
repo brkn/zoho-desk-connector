@@ -12,15 +12,9 @@ module Connectors
   class ZohoDesk
     BASE_URL = 'https://desk.zoho.eu/api/v1/'
     AUTH_URL = 'https://accounts.zoho.eu/oauth/v2/token'
-    AUTH_PARAMS = {
-      code: ENV.fetch('CODE', nil),
-      client_id: ENV.fetch('CLIENT_ID', nil),
-      client_secret: ENV.fetch('CLIENT_SECRET', nil)
-    }.freeze
 
-    def initialize(access_token, refresh_token)
+    def initialize(access_token)
       @access_token = access_token
-      @refresh_token = refresh_token
     end
 
     def read_connection
@@ -41,7 +35,7 @@ module Connectors
     def validate_access
       response = read_connection.get('tickets')
 
-      raise Connectors::AuthenticationError if response.status >= 400
+      raise Connectors::AuthenticationError if response.status == 401
 
       true
     end
@@ -86,32 +80,6 @@ module Connectors
         source_item.map { |item| item.dig(*dig_paths[object_name]) }
       else
         source_item.dig(*dig_paths[object_name])
-      end
-    end
-
-    private
-
-    def refresh_access_token!
-      response = base_connection.post(AUTH_URL) do |req|
-        req.params = AUTH_PARAMS.merge({
-                                         grant_type: 'refresh_token',
-                                         refresh_token: @refresh_token
-                                       })
-
-        @access_token = response.body['access_token']
-      end
-    end
-
-    def base_connection
-      Faraday.new(
-        url: BASE_URL,
-        headers: {
-          'Content-Type' => 'application/json'
-        }
-      ) do |faraday|
-        faraday.request :url_encoded # form-encode POST params
-        faraday.response :logger                  # log requests to STDOUT
-        faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
       end
     end
   end
