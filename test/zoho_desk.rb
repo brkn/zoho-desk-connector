@@ -40,7 +40,6 @@ describe Connectors::ZohoDesk do
       assert_equal "Here's your first ticket.", tickets[0]['subject']
     end
 
-    
     it 'handles the pagination parameters' do
       access_token = ENV.fetch('ACCESS_TOKEN', nil)
       refresh_token = ENV.fetch('REFRESH_TOKEN', nil)
@@ -62,6 +61,23 @@ describe Connectors::ZohoDesk do
       assert_equal '113670000000158077', ticket['id']
       assert_equal '101', ticket['ticketNumber']
       assert_equal "Here's your first ticket.", ticket['subject']
+    end
+  end
+
+  describe '#generate_item_url' do
+    it 'returns url to the ticket' do
+      ticket = zoho_desk.load_ticket('113670000000158077')
+      url = zoho_desk.generate_item_url(:tickets, ticket)
+
+      assert_equal 'https://desk.zoho.eu/support/tempasdasd/ShowHomePage.do#Cases/dv/113670000000158077', url
+    end
+
+    it 'returns array of urls for tickets' do
+      tickets = zoho_desk.load_tickets
+      urls = zoho_desk.generate_item_url(:tickets, tickets)
+
+      assert_equal tickets.length, urls.length
+      assert_equal ['https://desk.zoho.eu/support/tempasdasd/ShowHomePage.do#Cases/dv/113670000000158077'], urls
     end
   end
 end

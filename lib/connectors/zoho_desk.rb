@@ -31,7 +31,7 @@ module Connectors
           'Authorization' => "Zoho-oauthtoken #{@access_token}"
         }
       ) do |faraday|
-        faraday.request :url_encoded # form-encode POST params
+        faraday.request :url_encoded
         # faraday.response :logger
         faraday.response :json
         faraday.adapter  Faraday.default_adapter
@@ -63,15 +63,19 @@ module Connectors
 
     def generate_item_url(object_name, source_item)
       raise NotImplementedError unless object_name == :tickets
-      raise NotImplementedError unless %i[load_ticket load_tickets].include? source_item
 
-      # TODO: > generate url to the ticket (open ticket in browser)
-      # TODO: maybe define array path for the url in the hash, and splat it into the hash.dig
+      dig_path = ['webUrl']
+      source_is_array = source_item.is_a?(Array)
+
+      if source_item.is_a?(Array)
+        source_item.map { |item| item.dig(*dig_path) }
+      else
+        source_item.dig(*dig_path)
+      end
     end
 
-    def parse_core_item_id(object_name, source_item)
+    def parse_core_item_id(object_name, _source_item)
       raise NotImplementedError unless object_name == :tickets
-      raise NotImplementedError unless %i[load_ticket load_tickets].include? source_item
 
       # TODO: > parse id of the ticket
     end
