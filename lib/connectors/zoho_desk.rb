@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'faraday'
+require 'faraday_middleware'
 require 'dotenv/load'
 
 module Connectors
@@ -31,8 +32,9 @@ module Connectors
         }
       ) do |faraday|
         faraday.request :url_encoded # form-encode POST params
-        faraday.response :logger                  # log requests to STDOUT
-        faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
+        # faraday.response :logger
+        faraday.response :json
+        faraday.adapter  Faraday.default_adapter
       end
     end
 
@@ -50,8 +52,9 @@ module Connectors
 
     def load_tickets(batch_offset: 0, batch_size: 100)
       # FIXME: default 0 and 100?
+      response = read_connection.get('tickets')
 
-      # TODO: paginated list of tickets
+      response.body["data"]
     end
 
     def generate_item_url(object_name, source_item)
