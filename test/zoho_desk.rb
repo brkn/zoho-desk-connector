@@ -4,6 +4,16 @@ require_relative 'test_helper'
 require './lib/connectors/zoho_desk'
 
 describe Connectors::ZohoDesk do
+  let(:zoho_desk) do
+    access_token = ENV.fetch('ACCESS_TOKEN', nil)
+    refresh_token = ENV.fetch('REFRESH_TOKEN', nil)
+
+    Connectors::ZohoDesk.new(
+      access_token,
+      refresh_token
+    )
+  end
+
   describe '#validate_access' do
     it 'raises AuthenticationError if credentials are invalid' do
       zoho_desk = Connectors::ZohoDesk.new('invalid-username', 'invalid-api-key')
@@ -14,13 +24,6 @@ describe Connectors::ZohoDesk do
     end
 
     it 'returns true if credentials are valid' do
-      access_token = ENV.fetch('ACCESS_TOKEN', nil)
-      refresh_token = ENV.fetch('REFRESH_TOKEN', nil)
-      zoho_desk = Connectors::ZohoDesk.new(
-        access_token,
-        refresh_token
-      )
-
       is_valid = zoho_desk.validate_access
 
       assert is_valid
@@ -29,13 +32,6 @@ describe Connectors::ZohoDesk do
 
   describe '#load_tickets' do
     it 'returns paginated list of tickets' do
-      access_token = ENV.fetch('ACCESS_TOKEN', nil)
-      refresh_token = ENV.fetch('REFRESH_TOKEN', nil)
-      zoho_desk = Connectors::ZohoDesk.new(
-        access_token,
-        refresh_token
-      )
-
       tickets = zoho_desk.load_tickets
 
       assert_equal 1, tickets.length
@@ -61,13 +57,6 @@ describe Connectors::ZohoDesk do
 
   describe '#load_ticket' do
     it 'returns ticket data' do
-      access_token = ENV.fetch('ACCESS_TOKEN', nil)
-      refresh_token = ENV.fetch('REFRESH_TOKEN', nil)
-      zoho_desk = Connectors::ZohoDesk.new(
-        access_token,
-        refresh_token
-      )
-
       ticket = zoho_desk.load_ticket('113670000000158077')
 
       assert_equal '113670000000158077', ticket['id']
