@@ -72,12 +72,29 @@ describe Connectors::ZohoDesk do
       assert_equal 'https://desk.zoho.eu/support/tempasdasd/ShowHomePage.do#Cases/dv/113670000000158077', url
     end
 
-    it 'returns array of urls for tickets' do
+    it 'returns array of urls for an array of tickets' do
       tickets = zoho_desk.load_tickets
       urls = zoho_desk.generate_item_url(:tickets, tickets)
 
       assert_equal tickets.length, urls.length
       assert_equal ['https://desk.zoho.eu/support/tempasdasd/ShowHomePage.do#Cases/dv/113670000000158077'], urls
+    end
+  end
+
+  describe '#parse_core_item_id' do
+    it 'returns id to the ticket' do
+      ticket = zoho_desk.load_ticket('113670000000158077')
+      id = zoho_desk.parse_core_item_id(:tickets, ticket)
+
+      assert_equal '113670000000158077', id
+    end
+
+    it 'returns array of ids for an array of tickets' do
+      tickets = zoho_desk.load_tickets
+      ids = zoho_desk.parse_core_item_id(:tickets, tickets)
+
+      assert_equal tickets.length, ids.length
+      assert_equal ['113670000000158077'], ids
     end
   end
 end

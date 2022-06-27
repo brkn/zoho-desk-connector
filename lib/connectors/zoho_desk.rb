@@ -74,10 +74,17 @@ module Connectors
       end
     end
 
-    def parse_core_item_id(object_name, _source_item)
+    def parse_core_item_id(object_name, source_item)
       raise NotImplementedError unless object_name == :tickets
 
-      # TODO: > parse id of the ticket
+      dig_path = ['id']
+      source_is_array = source_item.is_a?(Array)
+
+      if source_item.is_a?(Array)
+        source_item.map { |item| item.dig(*dig_path) }
+      else
+        source_item.dig(*dig_path)
+      end
     end
 
     private
