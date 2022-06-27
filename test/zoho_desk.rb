@@ -48,7 +48,7 @@ describe Connectors::ZohoDesk do
         refresh_token
       )
 
-      tickets = zoho_desk.load_tickets(1, 12)
+      _tickets = zoho_desk.load_tickets(1, 12)
 
       # TODO: assert the length after seeding
     end
